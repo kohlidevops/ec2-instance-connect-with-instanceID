@@ -1,0 +1,31 @@
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "EC2InstanceConnect",
+            "Action": "ec2-instance-connect:OpenTunnel",
+            "Effect": "Allow",
+            "Resource": "arn:aws:ec2:<region>:<account-id>:instance-connect-endpoint/<EIC-endpoint-ID>",
+            "Condition": {
+                "NumericEquals": {
+                    "ec2-instance-connect:remotePort": "22"
+                },
+                "IpAddress": {
+                    "ec2-instance-connect:privateIpAddress": "<ec2-instance-privateIP-ranges>"
+                },
+                "NumericLessThanEquals": {
+                    "ec2-instance-connect:maxTunnelDuration": "60"
+                }
+            }
+        },
+        {
+            "Sid": "Describe",
+            "Action": [
+                "ec2:DescribeInstances",
+                "ec2:DescribeInstanceConnectEndpoints"
+            ],
+            "Effect": "Allow",
+            "Resource": "*"
+        }
+    ]
+}
